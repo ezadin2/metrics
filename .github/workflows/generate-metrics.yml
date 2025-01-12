@@ -22,6 +22,29 @@ jobs:
           plugin_topics: yes
           plugin_streak: yes
 
+      - name: Retry apt-get updates
+        run: |
+          sudo apt-get update || sudo apt-get update
+          sudo apt-get install -y wget gnupg ca-certificates || sudo apt-get install -y wget gnupg ca-certificates
+          
+      - name: Install Chrome and Other Dependencies
+        run: |
+          sudo apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 libx11-xcb1 libxtst6 lsb-release
+          sudo apt-get install -y curl unzip
+          
+      - name: Install Deno, Ruby, and Python
+        run: |
+          curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr/local sh
+          sudo apt-get install -y ruby-full git g++ cmake pkg-config libssl-dev
+          gem install licensed
+          sudo apt-get install -y python3
+          
+      - name: Clean apt cache and install node dependencies
+        run: |
+          sudo rm -rf /var/lib/apt/lists/*
+          npm ci
+          npm run build
+
       - name: Upload Metrics Image
         uses: actions/upload-artifact@v3
         with:
