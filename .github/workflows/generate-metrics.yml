@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Generate Metrics
         uses: lowlighter/metrics@latest
         with:
@@ -20,3 +21,9 @@ jobs:
           plugin_languages: yes
           plugin_topics: yes
           plugin_streak: yes
+
+      - name: Upload Metrics Image
+        uses: actions/upload-artifact@v3
+        with:
+          name: metrics
+          path: metrics.svg
